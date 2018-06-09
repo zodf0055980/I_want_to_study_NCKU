@@ -1,45 +1,31 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>到底能上哪裡勒</title>
-	<link rel="stylesheet" href="assets\css\pict.css" />
-	<script type="text/javascript" src="assets\js\jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="assets\js\jquery.tablesorter.js"></script> 
-  </head>
-  <body>
+	<head>
+		<title>公布結果了歐</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets\css\pict.css" />
+		<script type="text/javascript" src="assets\js\jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="assets\js\jquery.tablesorter.js"></script> 
+	</head>
 		<script type="text/javascript">
 		$(function () {
 
 			$("#myTable").tablesorter({widgets: ['zebra']});
 			
-		});
+		});	
+		
 		</script>
-		<div class="init">
-		<img src="images\map.jpg" width="1300">
-		</div>
-		<div class="i1">
-		<img src="images\成功廳.png" width="200">
-		</div>
-		<div class="i2">
-		<img src="images\成大博物館.png" width="130">
-		</div>
-		<div class="i3">
-		<img src="images\總圖.png" width="200">
-		</div>
-		<div class="i4">
-		<img src="images\榕園.png" width="150">
-		</div>
-		<div class="i5">
-		<img src="images\飛撲.png" width="100">
-		</div>
-		<div class="hos1">
-		<img src="images\hos.png" width="100">
-		</div>
-		<div class="hos2">
-		<img src="images\hos.png" width="100">
-		</div>
+	<body>
 
+			<header id="header">
+			<div class="logo">分析結果</div>
+			</header>
+			<section id="main">
+				<div class="inner">
+					<section id="one" class="wrapper style1">
+						<header class="special">
 		<?php
+		session_start(); 
 		ini_set('memory_limit', '256M');
 		$con=mysql_connect("localhost","root","密碼");
 		if (!$con)
@@ -52,7 +38,6 @@
 		$social=$_POST["social"];
 
 		if(!empty($_POST["college"])) {
-//			var_dump($_POST["college"]);
 			$i = 0;					
 			foreach($_POST["college"] as $college) {
 				$result=mysql_query("
@@ -106,7 +91,6 @@
 					$part1[$i++]=$row['Dept_name'];
 				}			
 			}
-//			var_dump($part1);
 		}
 		
 		if(!empty($part1)) {	//通過第二條件
@@ -123,7 +107,6 @@
 					$part2[$i++]=$row['Dept_name'];
 				}			
 			}
-//			var_dump($part2);
 		}
 		if(!empty($part2)) {	 //通過第三條件
 			$i = 0;			
@@ -139,7 +122,6 @@
 					$part3[$i++]=$row['Dept_name'];
 				}			
 			}
-	//		var_dump($part3);
 		}
 		if(!empty($part3)) {	//通過第四條件
 			$i = 0;						
@@ -155,7 +137,6 @@
 					$part4[$i++]=$row['Dept_name'];
 				}			
 			}
-	//		var_dump($part4);
 		}
 		if(!empty($part4)) {	//通過第五條件
 			$i = 0;						
@@ -182,26 +163,19 @@
 					$i++;
 				}			
 			}
-	//		var_dump($part5);
+			$_SESSION["id"] = $endcode;
 		}
-		
+		?>
+							<h2>落點分析地圖</h2>
+									<div class="init">
+									<iframe id="frameid" src="showmap.php" width="800" height="1000" frameborder ="0"></iframe>
+									</div>
+						</header>
+						<div class="content">
+							
+	<?php	
 		$cnt=count($endname);
-		for($i=0;$i<$cnt;$i++) {
-			if($endcode[$i]!=452){
-			echo "<div class=\"p".$endcode[$i]."\">";
-			echo "<img src=\"images\\".$endcode[$i].".jpg\">";
-			echo "</div>";
-			}
-		} 
-		
-		if ($cnt==0) {
-			echo "<div class=\"gg\">";
-			echo "<img src=\"images\gg.png\" width=\"100%\">";
-			echo "</div>";
-		}
 
-		
-		echo "<div class=\"word\">";
 		echo "你的分數:<br>國 ".$chinese." 英 ".$english." 數 ".$math." 自 ".$science." 社 ".$social."<br><br>";
 		echo "你能上的科系:<br>";
 		if($cnt!=0){
@@ -231,13 +205,19 @@
 			echo "</table> ";
 		}
 		if ($cnt==0) {
-			echo "滾去考指考八";
+			echo "滾去考指考八<br><br><br>";
 		}
-		echo "</div>";
 		mysql_close();
-
+		
 	?>
-  </body>
+			相關連結:<br>
+			<a href="http://material.ncku.edu.tw/">我對使用的圖片素材有興趣</a><br>
+			<a href="https://github.com/zodf0055980/I_want_to_study_NCKU">我對網站的原始碼有興趣</a><br>
+			<a href="http://web.ncku.edu.tw/files/11-1000-182.php?Lang=zh-tw">我對成大各系網站有興趣</a><br>
+			<a href="http://www.ceec.edu.tw/">我對資料來源有興趣</a><br>
+			<a href="http://www.uac.edu.tw/">我對指考報名有興趣</a><br>
+			</div>
+		</section>
+	</body>
 </html>
-
 
